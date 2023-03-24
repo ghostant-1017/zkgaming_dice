@@ -1,0 +1,46 @@
+// The 'dicebox' program.
+
+program dicebox.aleo {
+    record dicebox {
+        owner: address,
+        gates: u64,
+
+        dices: u32,
+        opponent: address,
+
+        game_id: u64,
+    }
+
+    transition new_dicebox(dices: u32, opponent: address) -> dicebox {
+        check(dices);
+        return dicebox {
+            owner: self.caller,
+            gates: 0u64,
+            dices: dices,
+            opponent: opponent,
+            game_id: 0u64,
+        };
+    }
+
+    transition set_game_id(db: dicebox, game_id: u64) -> dicebox {
+        assert(db.game_id == 0u64);
+        return dicebox {
+            owner: self.caller,
+            gates: 0u64,
+            dices: db.dices,
+            opponent: db.opponent,
+            game_id: game_id
+        };
+    }
+
+    function check(dices: u32) {
+        assert(dices >= 111111u32);
+        assert(dices <= 666666u32);
+        for i:u8 in 0u8..6u8{
+            let point: u32 = dices % 10u32;
+            assert(point > 0u32);
+            assert(point < 7u32);
+            dices = dices / 10u32;
+        }
+    }
+}

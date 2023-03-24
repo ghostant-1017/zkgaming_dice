@@ -1,0 +1,10 @@
+{
+    "program": "zkgaming_dice.aleo",
+    "version": "0.0.0",
+    "description": "",
+    "development": {
+        "private_key": "APrivateKey1zkpHa2tdAPuWhLu4xupzj82DQrP32ppT4DAJfkoXVzyGdVk",
+        "address": "aleo1e8a4glcalfum7kq6fwkjknsv84a300w98yn3085k7rcnty84auzqzrhc2e"
+    },
+    "license": "MIT"
+}
