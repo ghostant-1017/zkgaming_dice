@@ -2,13 +2,13 @@
 
 program dicebox.aleo {
     record dicebox {
-        owner: address,
-        gates: u64,
+        public owner: address,
+        public gates: u64,
 
         dices: u32,
-        opponent: address,
+        public opponent: address,
 
-        game_id: u64,
+        public game_id: u64,
     }
 
     transition new_dicebox(dices: u32, opponent: address) -> dicebox {
