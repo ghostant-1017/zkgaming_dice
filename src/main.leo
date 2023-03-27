@@ -66,7 +66,15 @@ program zkgaming_dice.aleo {
         assert(db.opponent == sm.signer); // Ensure the statement is sent by opponent
         assert(db.owner == sm.owner); // It's obvious
         let started_db: dicebox = dicebox.leo/set_game_id(db, sm.game_id);
-        return (started_db, sm);
+        let started_sm: statement = statement {
+            owner: db.opponent,
+            gates: 0u64,
+            num: sm.num,
+            point: sm.point,
+            game_id: sm.game_id,
+            signer: self.caller,
+        };
+        return (started_db, started_sm);
     }
 
     transition response_statement(sm: statement, num: u32, point: u32) -> statement {
