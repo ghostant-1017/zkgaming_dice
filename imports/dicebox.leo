@@ -1,6 +1,8 @@
 // The 'dicebox' program.
 
 program dicebox.aleo {
+    mapping games: u64 => u8;
+
     record dicebox {
         public owner: address,
         public gates: u64,
@@ -30,7 +32,12 @@ program dicebox.aleo {
             dices: db.dices,
             opponent: db.opponent,
             game_id: game_id
-        };
+        } then finalize(game_id);
+    }
+
+    finalize set_game_id(game_id: u64) {
+        // This will overflow when game_id exists;
+        increment(games, game_id, 255u8);
     }
 
     function check(dices: u32) {

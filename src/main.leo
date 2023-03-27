@@ -2,7 +2,6 @@
 import dicebox.leo;
 
 program zkgaming_dice.aleo {
-    mapping games: u64 => u8;
 
     record statement {
         public owner: address,
@@ -52,13 +51,7 @@ program zkgaming_dice.aleo {
             game_id: game_id,
             signer: self.caller
         };
-        return (started_db, sm) then finalize(game_id);
-    }
-
-    // Chain remember the game_id
-    finalize offer_dicebox(game_id: u64) {
-        // This will overflow when game_id exists;
-        increment(games, game_id, 255u8);
+        return (started_db, sm);
     }
 
     transition accept_dicebox(db: dicebox.leo/dicebox, sm: statement) -> (dicebox.leo/dicebox, statement) {
