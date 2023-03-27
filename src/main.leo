@@ -35,7 +35,7 @@ program zkgaming_dice.aleo {
 
     transition offer_dicebox(db: dicebox.leo/dicebox, game_id: u64) -> (dicebox.leo/dicebox, statement) {
         // We need something like game_id to mark the dicebox related the statement.
-        assert(db.game_id != 0u64 );
+        assert(db.game_id == 0u64 );
 
         // set_game_id should be like a internal call in eth;
         // or we need another mapping in dicebox to ensure [offer_dicebox] is the only way to set a game_id for dicebox
