@@ -36,8 +36,8 @@ program dicebox.aleo {
     }
 
     finalize set_game_id(game_id: u64) {
-        // This will overflow when game_id exists;
-        increment(games, game_id, 255u8);
+        // This will overflow when more than two same game_id exists;
+        increment(games, game_id, 122u8);
     }
 
     function check(dices: u32) {
