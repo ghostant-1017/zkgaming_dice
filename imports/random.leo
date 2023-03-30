@@ -64,7 +64,7 @@ program random.aleo {
     transition combine(p1: part1, p2: part2) -> u64 {
         assert(p1.id == p2.id);
         // TODO: Some hash func to generate random number
-        return p1.nonce + p2.nonce;
+        return p1.nonce + p2.nonce then finalize(p1.id);
     }
 
     finalize combine(id: u64) {
