@@ -1,48 +1,73 @@
 // The 'random' program.
 
 program random.aleo {
-    mapping ids: u64 => u8;
-    record preset {
+    mapping exists_ids: u64 => u8;
+
+    record part1 {
         public owner: address,
         public gates: u64,
 
         nonce: u64,
-        public game_id: u64,
+        public id: u64,
         public signer: address,
     }
 
-    transition make_preset(game_id: u64, nonce: u64, opponent: address) -> (preset, preset) {
-        let r1: preset = preset {
+    record part2 {
+        public owner: address,
+        public gates: u64,
+
+        nonce: u64,
+        public id: u64,
+        public signer: address,
+    }
+
+    transition exchange(id: u64, nonce: u64, opponent: address) -> (part1, part2) {
+        assert(self.caller != opponent);
+        // part1 is won by us, and we initialize nonce privately
+        let p1: part1 = part1 {
             owner: self.caller,
             gates: 0u64,
             nonce: nonce,
-            game_id: game_id,
+            id: id,
             signer: self.caller
         };
-        let r2: preset = preset {
+
+        // part2 is owned by opponent, and opponent shoud intialize nonce for it, and give it back to us
+        let p2: part2 = part2 {
             owner: opponent,
             gates: 0u64,
             // unititialized nonce
             nonce: 0u64,
-            game_id: game_id,
+            id: id,
             signer: self.caller
         };
-        return (r1,r2) then finalize(game_id);
+        return (p1, p2) then finalize(id);
     }
     
-    finalize make_preset(game_id: u64) {
+    finalize exchange(id: u64) {
         // This will overflow if more than 2 games created
-        increment(ids, game_id, 122u8);
+        increment(exists_ids, id, 255u8);
     }
-    // Set nonce for opponent
-    transition set_nonce(pre: preset, nonce: u64) -> preset {
-        assert(pre.nonce == 0u64);
-        return preset {
-            owner: pre.signer,
+
+    // part2 is sent from opponent, and we initialize nonce for it, and give it back to opponent
+    transition set_nonce(p2: part2, nonce: u64) -> part2 {
+        assert(p2.nonce == 0u64);
+        return part2 {
+            owner: p2.signer,
             gates: 0u64,
             nonce: nonce,
-            game_id: pre.game_id,
+            id: p2.id,
             signer: self.caller
         };
     }
-}
+
+    transition combine(p1: part1, p2: part2) -> u64 {
+        assert(p1.id == p2.id);
+        // TODO: Some hash func to generate random number
+        return p1.nonce + p2.nonce;
+    }
+
+    finalize combine(id: u64) {
+        decrement(exists_ids, id, 255u8);
+    }
+ }
