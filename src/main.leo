@@ -123,15 +123,15 @@ program zkgaming_dice.aleo {
     }
 
     // Consumes the dicebox and challenge and generate the result
-    transition accept_challenge(db: dicebox.leo/dicebox, cg: challenge) -> public bool {
+    transition accept_challenge(db: dicebox.leo/dicebox, cg: challenge) -> (public u64, public address) {
         assert(db.game_id == cg.game_id);
         assert(db.opponent == cg.signer);
 
         let owned_num: u32 = calculate(db.dices, cg.point);
         if owned_num >= cg.needed_num {
-            return true;
+            return (db.game_id, db.owner);
         }
-        return false;
+        return (db.game_id, db.opponent);
     }
 
     function calculate(dices: u32, point: u32) -> u32 {
