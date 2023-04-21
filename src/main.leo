@@ -1,6 +1,6 @@
 // The 'zkgaming_dice' program.
 import dicebox.leo;
-import random.leo;
+// import random.leo;
 
 program zkgaming_dice.aleo {
 
@@ -28,16 +28,16 @@ program zkgaming_dice.aleo {
         public signer: address,
     }
 
-    transition initial_dicebox_random(p1: random.leo/part1.record, p2: random.leo/part2.record) -> dicebox.leo/dicebox {
-        let id: u64 = p1.id;
-        let opponent: address = p2.signer;
-        let nonce: u64 = random.leo/combine(p1, p2);
-        // let dices: u32 = dices_from_nonce(nonce);
-        // let dices: u32 = dices_from_nonce();
-        let dices: u32 = 123456u32;
-        let db: dicebox = dicebox.leo/new_dicebox(dices, opponent);
-        return db;
-    }
+    // transition initial_dicebox_random(p1: random.leo/part1.record, p2: random.leo/part2.record) -> dicebox.leo/dicebox {
+    //     let id: u64 = p1.id;
+    //     let opponent: address = p2.signer;
+    //     let nonce: u64 = random.leo/combine(p1, p2);
+    //     // let dices: u32 = dices_from_nonce(nonce);
+    //     // let dices: u32 = dices_from_nonce();
+    //     let dices: u32 = 123456u32;
+    //     let db: dicebox = dicebox.leo/new_dicebox(dices, opponent);
+    //     return db;
+    // }
 
     transition initial_dicebox(dices: u32, opponent: address) -> dicebox.leo/dicebox {
         let db: dicebox = dicebox.leo/new_dicebox(dices, opponent);
